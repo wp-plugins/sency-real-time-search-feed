@@ -4,7 +4,7 @@ Plugin Name: Sency - Real Time Search
 Plugin URI: http://www.think-press.com/plugins/sency
 Description: Real-time conversation search results for your website.
 Author: Pixel Jar
-Version: 1.0
+Version: 1.1
 Author URI: http://www.think-press.com
 
 Copyright 2009  Pixel jar  (email : info@pixeljar.net)
