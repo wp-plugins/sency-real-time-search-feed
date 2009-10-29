@@ -38,7 +38,7 @@ if ( ! defined( 'WP_PLUGIN_URL' ) )
 if ( ! defined( 'WP_PLUGIN_DIR' ) )
       define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
 if ( ! defined( 'SENCY_URL' ) )
-      define( 'SENCY_URL', WP_CONTENT_URL . '/plugins/sency' );
+      define( 'SENCY_URL', WP_CONTENT_URL . '/plugins/sency-real-time-search-feed' );
 
 if (class_exists('WP_Widget')) {
 	class TP_Sency extends WP_Widget {

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Search, Sency, Widget, Sidebar
 Requires at least: 2.8
 Tested up to: 2.8.5
-Stable tag: 1.0
+Stable tag: 1.1
 
 == Description ==
 
@@ -28,7 +28,7 @@ If you have any problems with this widget, please don't hesitate to let us know.
 
 == Frequently Asked Questions ==
 
-= I put two Sency widgets in my sidebar and now nothing is showing up. What gives?
+= I put two Sency widgets in my sidebar and now nothing is showing up. What gives? =
 
 Due to the way this widget interacts with Sency at this point in time, you are limited to using only one feed at a time. Even though it seems to support multiple widgets, that is actually a function of WordPress being able to support it. If anyone knows of a way to disable multiple widget instances using the new Widgets API, please let me know and I'll fix this.
 
@@ -51,3 +51,7 @@ Ok. If you don't see mention of widgets in the WordPress admin, you're not crazy
 = Version 1.0 =
 
 It's version 1 baby, what you see is what you get.
+
+= Version 1.1 =
+
+Corrected the path to the toggle icon. Fixed the FAQ section in the readme file.
