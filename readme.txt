@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Search, Sency, Widget, Sidebar
 Requires at least: 2.8
 Tested up to: 2.8.5
-Stable tag: 1.1
+Stable tag: 1.2
 
 == Description ==
 
@@ -55,3 +55,7 @@ It's version 1 baby, what you see is what you get.
 = Version 1.1 =
 
 Corrected the path to the toggle icon. Fixed the FAQ section in the readme file.
+
+= Version 1.2 =
+
+Added preliminary support for the Popular links feed
