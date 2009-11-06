@@ -4,7 +4,7 @@ Plugin Name: Sency - Real Time Search
 Plugin URI: http://www.think-press.com/plugins/sency
 Description: Real-time conversation search results for your website.
 Author: Pixel Jar
-Version: 1.1
+Version: 1.2
 Author URI: http://www.think-press.com
 
 Copyright 2009  Pixel jar  (email : info@pixeljar.net)
@@ -55,7 +55,14 @@ if (class_exists('WP_Widget')) {
 			echo $before_title;
 			echo $instance['top_text'];
 			echo $after_title;
-			echo '<div id="news_scroller">';
+			
+			if ( $instance['show_links'] == 'yes') :
+				echo '<div id="sency-tabs">';
+					echo '<div id="news-tab" style="float: left;"><a href="#news" class="on">News</a></div>';
+					echo '<div id="link-tab" style="float: left;"><a href="#link" class="off">Popular Links</a></div>';
+				echo '</div>';
+			endif;
+			echo '<div id="news_scroller" class="on">';
 			echo '<style type="text/css">';
 			echo '	ul#uu li#ll { height: auto !important; width: !important; }';
 			echo '	ul#uu li#ll div.news_item { height: auto !important; width: auto !important; }';
@@ -68,7 +75,7 @@ if (class_exists('WP_Widget')) {
 				echo '&src='.			$instance['show_src'];						// default = no			(acceptable values: yes or no)
 				echo '&title='.			$instance['show_title'];					// default = off		(acceptable values: off or on)
 				echo '&time='.			$instance['show_time'];						// default = on			(acceptable values: off or on)
-				echo '&q='.				$instance['search_string'];					// default = news		(acceptable values: string value)
+				echo '&q='.				urlencode($instance['search_string']);		// default = news		(acceptable values: string value)
 				echo '&textcolor='.		urlencode( $instance['text_color'] );		// default = black		(acceptable values: %23ffffff or white)
 				echo '&textsize='.		$instance['text_size'];						// default = 12			(acceptable values: int value)
 				echo '&bgcolor='.		urlencode( $instance['bg_color'] );			// default = white		(acceptable values: %23ffffff or white)
@@ -79,6 +86,17 @@ if (class_exists('WP_Widget')) {
 				echo '&urlcolor='.		urlencode( $instance['link_color'] );		// default = black		(acceptable values: %23ffffff or white)
 			echo '"></script>';
 			echo '</div>';
+			if ( $instance['show_links'] == 'yes') :
+				echo '<div id="popularlinks">';
+				echo '<script src="http://www.sency.com/popularlinks.php?';
+					echo 'results='.		$instance['num_links'];						// default = 10			(acceptable values: int value)
+					echo '&q='.				urlencode($instance['search_string']);		// default = news		(acceptable values: string value)
+					echo '&charcount='.		$instance['link_length'];					// default = 50			(acceptable values: int value)
+					echo '&w='.				$instance['width'];							// default = 250		(acceptable values: int value)
+					echo '&height='.		$instance['height'];						// default = 600		(acceptable values: int value)
+				echo '"></script>';
+				echo '</div>';
+			endif;
 			echo $after_widget;
 	    }
 
@@ -113,6 +131,11 @@ if (class_exists('WP_Widget')) {
 			
 			// Search Term
 			$search_string 		=!empty( $instance['search_string'] )	? esc_attr( $instance['search_string'] )	: 'news';
+			
+			// Popular Links
+			$show_links 		=!empty( $instance['show_links'] )		? esc_attr( $instance['show_links'] )	: 'no';
+			$num_links	 		=!empty( $instance['num_links'] )		? esc_attr( $instance['num_links'] )	: '10';
+			$link_length 		=!empty( $instance['link_length'] )		? esc_attr( $instance['link_length'] )	: '50';
 ?>
 				<!-- Header Text (widgettitle) -->
 				<p><label for="<?php echo $this->get_field_id('top_text'); ?>"><?php _e('Title:'); ?><br />
@@ -201,30 +224,24 @@ if (class_exists('WP_Widget')) {
 					</div>
 				</div>
 				
-				<!-- HEADER OPTIONS (Top/Top Text/Top Text Color/Top BG Color)
+				<!-- GLOBAL OPTIONS (Show Links/Num Links/Link Length) -->
 				<div class="s-option-header">
-					<h3>Header</h3>
+					<h3>Popular Link Options</h3>
 					<div class="s-option-body">
-					<p><label for="<?php echo $this->get_field_id('show_top'); ?>"><?php _e('Show Header:'); ?><br />
-						<select id="<?php echo $this->get_field_id('show_top'); ?>" name="<?php echo $this->get_field_name('show_top'); ?>" style="width: 100%;">
-							<option value="on"<?php echo ($show_top == 'on' ? ' selected' : '');?>>Yes</option>
-							<option value="off"<?php echo ($show_top == 'off' ? ' selected' : '');?>>No</option>
-						</select>
-					</label></p>
-					<p><label for="<?php echo $this->get_field_id('top_text'); ?>"><?php _e('Header Text:'); ?><br />
-						<input id="<?php echo $this->get_field_id('top_text'); ?>" name="<?php echo $this->get_field_name('top_text'); ?>" type="text" style="width: 100%;" value="<?php echo $top_text; ?>" />
-					</label></p>
-					<p><label for="<?php echo $this->get_field_id('top_text_color'); ?>"><?php _e('Header Text Color:'); ?> <a href="javascript:return false;" onclick="toggleColorpicker (this, '<?php echo $this->get_field_id('top_text_color'); ?>', 'open', '<?php _e('show color picker'); ?>', '<?php _e('hide color picker'); ?>')"><?php _e('show color picker'); ?></a><br />
-						<div id="<?php echo $this->get_field_id('top_text_color'); ?>_colorpicker" class="colorpicker_container"></div>
-						<input id="<?php echo $this->get_field_id('top_text_color'); ?>" name="<?php echo $this->get_field_name('top_text_color'); ?>" type="text" style="width: 100%;" value="<?php echo $top_text_color; ?>" />
-					</label></p>
-					<p><label for="<?php echo $this->get_field_id('top_bg_color'); ?>"><?php _e('Header Background Color:'); ?> <a href="javascript:return false;" onclick="toggleColorpicker (this, '<?php echo $this->get_field_id('top_bg_color'); ?>', 'open', '<?php _e('show color picker'); ?>', '<?php _e('hide color picker'); ?>')"><?php _e('show color picker'); ?></a><br />
-						<div id="<?php echo $this->get_field_id('top_bg_color'); ?>_colorpicker" class="colorpicker_container"></div>
-						<input id="<?php echo $this->get_field_id('top_bg_color'); ?>" name="<?php echo $this->get_field_name('top_bg_color'); ?>" type="text" style="width: 100%;" value="<?php echo $top_bg_color; ?>" />
-					</label></p>
+						<p><label for="<?php echo $this->get_field_id('show_links'); ?>"><?php _e('Show Popular Links:'); ?><br />
+							<select id="<?php echo $this->get_field_id('show_links'); ?>" name="<?php echo $this->get_field_name('show_links'); ?>" style="width: 100%;">
+								<option value="yes"<?php echo ($show_links == 'yes' ? ' selected' : '');?>>Yes</option>
+								<option value="no"<?php echo ($show_links == 'no' ? ' selected' : '');?>>No</option>
+							</select>
+						</label></p>
+						<p><label for="<?php echo $this->get_field_id('num_links'); ?>"><?php _e('Number of Links:'); ?><br />
+							<input id="<?php echo $this->get_field_id('num_links'); ?>" name="<?php echo $this->get_field_name('num_links'); ?>" type="text" style="width: 100%;" value="<?php echo $num_links; ?>" />
+						</label></p>
+						<p><label for="<?php echo $this->get_field_id('link_length'); ?>"><?php _e('Length of Links:'); ?><br />
+							<input id="<?php echo $this->get_field_id('link_length'); ?>" name="<?php echo $this->get_field_name('link_length'); ?>" type="text" style="width: 100%;" value="<?php echo $link_length; ?>" />
+						</label></p>
 					</div>
 				</div>
-				-->
 				<script type="text/javascript">
 					jQuery(this).ready(function($) {
 						$('div.s-option-body').hide();
@@ -247,6 +264,8 @@ if (class_exists('WP_Widget')) {
 			wp_enqueue_script('jquery');
 			wp_enqueue_script('farbtastic');
 			wp_enqueue_style('farbtastic');
+		} else if (!is_admin()) {
+			wp_enqueue_script('jquery');
 		}
 	}
 	
@@ -303,8 +322,41 @@ if (class_exists('WP_Widget')) {
 	}
 	
 	add_action('wp_head', 'wp_head_intercept');
-	function wp_head_intercept() {
-		echo '<meta name="generator" content="Think-Press, Sency - Real Time Search v1.0" />';
+	function wp_head_intercept() { ?>
+		<meta name="generator" content="Think-Press, Sency - Real Time Search v1.2" />
+		<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				$('div#popularlinks').hide();
+				
+				// shows on clicking the noted link
+				$('div#sency-tabs #news-tab').click(function() {
+					$('div#popularlinks').hide();
+					$('div#news_scroller').show();
+					return false;
+				});
+				// shows on clicking the noted link
+				$('div#sency-tabs #link-tab').click(function() {
+					$('div#news_scroller').hide();
+					$('div#popularlinks').show();
+					return false;
+				});
+			});
+		</script>
+		<style type="text/css">
+			div#sency-tabs {
+				margin-top: 5px;
+			}
+			div#sency-tabs div#news-tab,
+			div#sency-tabs div#link-tab {
+				margin-right: 5px;
+				padding: 2px 5px;
+				background: #ddd;
+			}
+			div#sency-tabs div.clear {
+				clear: both;
+			}
+		</style>
+	<?php
 	}
 }
 ?>
