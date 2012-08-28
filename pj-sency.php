@@ -1,13 +1,11 @@
 <?php
 /*
 Plugin Name: Sency - Real Time Search
-Plugin URI: http://www.think-press.com/plugins/sency
-Description: Real-time conversation search results for your website.
-Author: Pixel Jar
+Description: This plugin is no longer supported
+Author: Abandoned Plugins
 Version: 1.2
-Author URI: http://www.think-press.com
 
-Copyright 2009  Pixel jar  (email : info@pixeljar.net)
+Copyright 2009  Abandoned Plugins
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
